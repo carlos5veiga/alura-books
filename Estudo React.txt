@@ -1,0 +1,195 @@
+Só fui bem sucedido para rodar npx create-react-app . usando o node 14.21.3
+Usando node com versões mais novas ele sempre quebrava...
+
+npm start para iniciar a aplicação
+
+O react usa o JSX, que é uma combinação de HTML e Javascript
+
+O react usa o hot reload, ou seja, alterações salvas são automaticamente atualizadas no localhost.
+
+O arquivo App.js contém o conteúdo da página inicial do projeto criado
+
+No App.js ele deletou o conteúdo da tag header, mantendo a tag
+
+Em seguida ele apagou o conteúdo do arquivo App.css
+Ele vai utilizar uma biblioteca que permite estilizar os componentes dentro do próprio arquivo index.js
+
+Basicamente cada componente do react é uma função que exporta html.
+detalhes importantes: sempre o que deve ser exportado é uma tag apenas, no caso abaixo, uma div.
+A tag exportada pode conter inúmeros componentes dentro dela.
+Mas sempre a exportação é de um componente apenas.
+Existe também o componente react criado com classe mas, pelo meus estudos, o componente de function,
+além de mais usado, é mais moderno e mais prático.
+Os import acontecem no início do arquivo.
+
+import logo from './logo.svg';
+import './App.css';
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+criou uma pasta imagens dentro de src
+moveu as imagens baixadas para dentro da pasta
+
+o react usa a nomenclatura className para diferenciar do class do HTML...
+mas o objetivo é o mesmo... estilizar com css
+
+Ele importou a logo do alura books e inseriu uma div e uma imagem dentro do header
+import logo from './imagens/logo.svg';
+
+<div className='logo'>
+   <img src={logo} />
+</div>
+
+Qualquer tag HTML que não tenha filhos pode ser fechada com />, como a img acima
+
+Na importação logo passou a ser uma variável que foi usada entre chaves {logo} na propriedade src
+
+Adicionou um texto estilizado com strong e o alt da imagem
+
+<div className='logo'>
+   <img src={logo} alt='Imagem da logo'/>
+   <p><strong>Alura</strong>Books</p>
+</div>
+ 
+ele criou a classe logo no App.css para estilizar
+
+.logo {
+    display: flex;
+}
+
+Vamos agora criar um componente Logo que poderá ser usado em outros locais
+
+criamos uma pasta componentes em src e dentro dela criamos a pasta Logo (com L Maiúsculo mesmo)
+dentro da pasta Logo ele cria um arquivo index.js e um estilo.css
+como todo componente é um função, dentro de index.js a gente vai criar uma função e exportá-la
+O conteúdo da função é o mesmo HTML que já criamos dentro de App.js. Basta mudar de lugar.
+O arquivo index.js ficou assim
+
+import logo from '../../imagens/logo.svg';
+
+function Logo() {
+    return (
+        <div className='logo'>
+            <img src={logo} alt='Imagem da logo' />
+            <p><strong>Alura</strong>Books</p>
+        </div>
+    )
+}
+
+export default Logo
+
+o nome da função é o mesmo nome da pasta (por isso usamos o L maiúsculo em ambos os casos)
+
+O arquivo App.js ficou mais simples
+
+import './App.css';
+import Logo from './componentes/Logo';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Logo />
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+O componente continou estilizado porque a classe logo continua no App.css
+Mas é melhor colocar no estilo.css da pasta Logo e importar no index.js
+
+Ele continuou estilizando o logo dentro do estilo.css
+
+vamos continuar criando o header
+
+Para isso vamos popular o header e aprender a usar loops no react
+Criou uma ul com 3 li dentro e um p em cada li
+
+<header className="App-header">
+        <Logo />
+        <ul className='opcoes'>
+          <li className='opcao'><p>Categorias</p></li>
+          <li className='opcao'><p>Favoritos</p></li>
+          <li className='opcao'><p>Estante</p></li>
+        </ul>
+      </header>
+
+Ele estilizou para ficar mais arrumado
+Mas o código está muito repetido
+Sendo um arquivo js, podemos resolver isso com js
+ele criou uma lista com os textos (única parte do li que muda)
+
+const textoOpcoes = ['Categoria', 'Favorito', 'Estante'];
+
+Substituiu cada linha de li por uma função usando o map
+
+<ul className='opcoes'>
+          { textoOpcoes.map( (texto) => {
+            return <li className='opcao'><p>{ texto }</p></li>
+          }) }
+        </ul>
+
+no meu código foi pedido para usar o return na função callback do map
+No código do prof não pediu. provavelmente, versões...
+
+
+Vamos aproveitar agora e praticar o map para colocar os ícones do header
+
+import perfil from './imagens/perfil.svg';
+import sacola from './imagens/sacola.svg';
+
+const icones = [perfil, sacola];
+
+<ul className='icones'>
+          { icones.map( (icone) => {
+            return <li className='icone'><img src = { icone } alt='icone'/></li>
+          }) }
+        </ul>
+
+
+Tudo funcionando mas vamos agora componentizar para limpar o código
+
+Criamos a pasta OpcoesHeader com o index.js e o estilo.css
+
+Fiz sozinho a componentização e deu bom
+Basicamente foi trocar a ul de arquivo, assim como as classes ligadas a ela
+Criando a função OpcoesHeader e exportando...
+Não esqueça de importar o css no novo arquivo .js
+
+Vou fazer agora o componente dos ícones, na pasta IconesHeader
+
+Fiz sozinho e tudo funcionou beleza...
+Quando componentizar, atenção às imagens ou recursos que estejam carregados
+Como criamos pasta nova para o componente, o path desses recursos normalmente precisa ser corrigido
+
+Vamos agora criar um componente Header que vai conter Logo, OpcoesHeader e IconesHeader
+
+Apenas atente que será preciso criar uma div pois a função deve exportar apenas um único componente
+Mas na verdade não precisou pois ele levou junto a tag header e isso resolve a questão
+
+Tudo andando de boas
+
+Agora ele vai instalar uma biblioteca que permite eliminar os arquivos css (styled components)
+
+npm install styled-components
+
+como eu fiz um clone em outra máquina, eu fui na pasta do projeto e rodei npm install
+todas as dependências do projeto foram adicionadas e o projeto rodou beleza
+
+maravilha
+
+voltando ao styled-components
+
+
+
+
