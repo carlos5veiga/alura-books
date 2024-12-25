@@ -190,6 +190,82 @@ maravilha
 
 voltando ao styled-components
 
+Ele vai nos ajudar na conteinerização
 
+Um conteiner tem a função única de encapsular outros ítens. Por exemplo, Header é um conteiner.
+
+<header className="App-header">
+    <Logo />
+    <OpcoesHeader />
+    <IconesHeader />
+</header>
+
+No App.js também existe um conteiner...
+<div className="App">
+  <Header />
+</div>
+
+A única função dessa div é encapsular o Header...
+
+Com o styled-components o css vai ficar dentro do arquivo ,js de cada conteiner,
+permitindo, assim, excluir todos os .css do projeto.
+
+No App.js ele importou o styled-components
+import styled from 'styled-components'
+
+Vamos criar uma const que vai ser esse componente estilizado usando a crase
+e dentro da crase a gente vai colocar o css que se relaciona com esse conteiner
+perceba que a classe .App deixou de existir
+por enquanto, o a estilização do li vai ficar aí
+Usamos o .div depois do styled porque, nesse caso, o componente é uma div
+
+const AppContainer = styled.div`
+
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
+
+  li {
+      list-style: none;
+  }
+`
+
+Não precisa alterar o export mas o que antes estava assim, em App.js,
+
+function App() {
+  return (
+    <div className="App">
+      <Header />
+    </div>
+  );
+}
+
+passou a ficar assim...
+
+function App() {
+  return (
+    <AppContainer>
+      <Header />
+    </AppContainer>
+  );
+}
+
+export default App;
+
+Muito legal!!!
+
+Podemos, então, excluir o import do css
+
+funcionouE eu já fiz com o Header e deu certo
+Agora ele se chama HeaderComponent ao invés de usar a tag header
+Mas é claro que o conteiner teve styled.header`` na sua criação
+
+Tudo criado pelo styled components é um componente, e o padrão do react é,
+tudo que for componente, começa com letra maiúscula...
+AppContainer, HeaderContainer, Header, App....
+
+Massa demais...
+
+Vamos aprender agora a usar o styled components quando não se trata de conteiner...
 
 
