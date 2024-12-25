@@ -268,4 +268,87 @@ Massa demais...
 
 Vamos aprender agora a usar o styled components quando não se trata de conteiner...
 
+Segundo o professor, em projetos muito complexos de react, às vezes o css não é perfeitamente seguido
+por causa de nomes de classes ou coisas do tipo que podem 'confundir' o react em casos de loop, por exemplo.
+Segundo ele, o styled-components traz segurança neste sentido ao projeto,
+além de deixá-lo mais enxuto.
 
+Vamos trabalhar agona no componente IconesHeader, também com o objetivo de eliminar o css.
+Mas esse caso é um pouco diferente pois temos duas classes dentro do componente.
+
+.icones {
+    display: flex;
+    align-items: center;
+}
+
+.icone {
+    margin-right: 40px;
+    width: 25px;
+}
+
+O componente antes estava assim....
+
+Foi criado um styled para a li recebendo o nome de Icone
+
+const Icone = styled.li`
+    margin-right: 40px;
+    width: 25px;
+`
+
+e também um outro chamado Icones para a ul
+
+const Icones = styled.ul`
+    display: flex;
+    align-items: center;
+`
+
+Vou fazer a mesma coisa com Logo e OpcoesHeader
+
+Deu tudo certo por aqui....
+Muito legal, muito útil também...
+
+Vamos lidar agora com o Global Style, ou seja, estilização para todo o projeto
+
+Existe um arquivo chamado index.css
+
+O index.js é o que serve para o react trabalhar por baixo dos panos
+
+então, o nosso styled component que vai trabalhar como global vai ser nesse arquivo
+
+mas a forma é um pouco diferente
+
+no index.js precisamos fazer a importação da seguinte maneira:
+import { createGlobalStyle } from 'styled-components';
+
+depois criamos o GlobalStyle e copiamos o conteúdo do index.css e também trazemos
+aquele li que tinha ficado no App.js
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+
+  li {
+    list-style: none;
+  }
+`
+Podemos agora usar o componente GlobalStyle antes do componente App
+dentro do próprio index.js e retirar o import do index.css
+Podemos também apagar o index.css
+
+Massa demais
+
+<React.StrictMode>
+    <GlobalStyle />
+    <App />
+</React.StrictMode>

@@ -1,15 +1,23 @@
-import './estilo.css'
+import styled from 'styled-components';
 import logo from '../../imagens/logo.svg';
+
+const LogoContainer = styled.div`
+    display: flex;
+    font-size: 30px;
+`
+
+const LogoImg = styled.img`
+    margin-right: 10px;
+`
 
 function Logo() {
     return (
-        <div className='logo'>
-            <img
+        <LogoContainer>
+            <LogoImg
                 src={logo}
-                alt='Imagem da logo'
-                className='logo-img' />
+                alt='Imagem da logo' />
             <p><strong>Alura</strong>Books</p>
-        </div>
+        </LogoContainer>
     )
 }
 
