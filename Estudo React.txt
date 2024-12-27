@@ -352,3 +352,226 @@ Massa demais
     <GlobalStyle />
     <App />
 </React.StrictMode>
+
+
+Agora vamos conhecer um conceito muito importante: ESTADO
+
+No App.js ele criou já a tag Pesquisa
+<AppContainer>
+  <Header />
+  <Pesquisa />
+</AppContainer>
+
+Ele começou pelo caminho inverso...
+
+Depois ele criou o componente e fez o fluxo padrão, criou a função com o export default
+
+colocou um h2, h3 e um input....
+
+Colocou o import de Pesquisa no App.js e testou.... não estava estilizado, mas já apareceu...
+
+Pensando na reutilização futura do input, ele resolveu criar um componente só para isso...
+Entretanto, como o styled component é um componente e o input não tem lógica alguma,
+ele fez apenas um styled component para ser o Input
+e o código ficou bastante simples...
+Acredito que quando for um input, pode ser sempre feito assim....
+import styled from 'styled-components';
+
+const Input = styled.input`
+    order: 1px solid #FFF;
+    background: transparent;
+    border: 1px solid #FFF;
+    padding: 20px 140px;
+    border-radius: 50px;
+    width: 200px;
+    color: #FFF;
+    font-size: 16px;
+    margin-bottom: 10px;
+
+    &::placeholder {
+        color: #FFF;
+        font-size: 16px;
+    }
+`
+export default Input
+
+O placeholder fica na própria chamada ao Input, que está em Pesquisa
+
+<section>
+    <h2>Já sabe por onde começar?</h2>
+    <h3>Encontre seu livro em nossa estante.</h3>
+    <Input placeholder="Escreva sua próxima leitura"/>
+</section>
+
+Para poder estilizar o h2 e o h3, ele trocou a section por PesquisaContainer,
+h2 por Titulo e h3 por Subtitulo
+
+import Input from '../Input'
+import styled from 'styled-components'
+
+const PesquisaContainer = styled.section`
+    background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
+    color: #FFF;
+    text-align: center;
+    padding: 85px 0;
+    height: 470px;
+    width: 100%;
+`
+
+const Titulo = styled.h2`
+    color: #FFF;
+    font-size: 36px;
+    text-align: center;
+    width: 100%;
+`
+
+const Subtitulo = styled.h3`
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 40px;
+`
+function Pesquisa() {
+    return(
+        <PesquisaContainer>
+            <Titulo>Já sabe por onde começar?</Titulo>
+            <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
+            <Input placeholder="Escreva sua próxima leitura"/>
+        </PesquisaContainer>
+    )
+}
+
+export default Pesquisa
+
+Vamos agora entender como fazer para que o conteúdo do input seja capturado pelo react
+
+no Input usaremos o onBlur, que é o evento de sair do campo...
+o onBlur sempre tem um evento e para capturar o valor do input usaremos evento.target.value
+como no exemplo abaixo
+onBlur={evento => console.log(evento.target.value)}
+
+o estado está relacionado às propriedades do componente que podem ter seus valores alterados
+
+começamos importando no componente Pesquisa
+
+import { useState } from 'react'
+
+declaramos o estado no início da função (antes do return) da seguinte maneira
+
+const [textoDigitado, setTextoDigitado] = useState('')
+
+primeiro vem o nome do estado e depois o nome da função que vai servir para alterar o valor do estado
+dentro do useState vem o valor inicial do estado... em strings, normalmente vai ser ''
+o setTextoDigitado fica a cargo do react.... a gente não faz nada além de informar nessa declaração
+
+mas a gente vai usar setTextoDigitado no onBlur...
+
+<Input 
+  placeholder="Escreva sua próxima leitura"
+  onBlur={evento => setTextoDigitado(evento.target.value)}
+/>
+
+e apenas para monitorar nesse momento, usaremos uma tag p para acompanhar a mudança de estado
+
+<PesquisaContainer>
+  <Titulo>Já sabe por onde começar?</Titulo>
+  <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
+  <Input 
+      placeholder="Escreva sua próxima leitura"
+      onBlur={evento => setTextoDigitado(evento.target.value)}
+  />
+  <p>{ textoDigitado }</p>
+</PesquisaContainer>
+
+vamos agora criar um pequeno mock de dados para termos um retorno na pesquisa
+
+criamos o arquivo dadosPesquisa.js na pasta Pesquisa que ficou assim
+
+import livro from '../../imagens/livro.png'
+
+export const livros = [
+    {nome: 'Liderança em Design', id: 1, src: livro},
+    {nome: 'Javascript Assertivo', id: 2, src: livro},
+    {nome: 'Cangaceiro em Javascript', id: 3, src: livro},
+    {nome: 'Mergulhando em Java', id: 4, src: livro}
+]
+
+Perceba que o export dele é diferente pois dessa forma a gente pode
+exportar outros dados também como, por exemplo, 
+export const autores = [ ........ ]
+
+o import dele em Pesquisa também será diferente, será entre chaves...
+
+import { livros } from './dadosPesquisa'
+
+vamos alterar agora o nosso estado, ele vai se chamar livrosPesquisados
+
+const [livrosPesquisados, setLivrosPesquisados] = useState([])
+
+livrosPesquisados será uma lista de livros retornado então o seu estado inicial é [], uma lista vazia
+
+A nossa function Pesquisa mudou bastante...
+function Pesquisa() {
+    const [livrosPesquisados, setLivrosPesquisados] = useState([])
+    console.log(livrosPesquisados);
+                    
+    return(
+        <PesquisaContainer>
+            <Titulo>Já sabe por onde começar?</Titulo>
+            <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
+            <Input 
+                placeholder="Escreva sua próxima leitura"
+                onBlur={evento => {
+                    const textoDigitado = evento.target.value
+                    const resultadoPesquisa = livros.filter(livro => livro.nome.includes(textoDigitado))
+                    setLivrosPesquisados(resultadoPesquisa)
+                }}
+            />
+        </PesquisaContainer>
+    )
+}
+
+export default Pesquisa
+
+ele usou um console.log abaixo do useState para monitorar o valor de resultadoPesquisa
+que é alterado no onBlur...
+
+no onBlur agora ele recebe o textoDigitado,
+faz um filtro em livros usando o textoDigitado...
+nesse filtro, o retorno será uma lista que contém todos os livros que possuem o textoDigitado no atributo nome
+depois usa o setLivrosPesquisados para alterar o estado....
+bem tranquilo....
+mas o console.log quando eu testei dentro do onBlur não trouxe a resposta atualizada. veio sempre a primeira.
+
+faremos um map para exibir os livros na tela e podemos apagar o console.log
+
+function Pesquisa() {
+    const [livrosPesquisados, setLivrosPesquisados] = useState([])
+                    
+    return(
+        <PesquisaContainer>
+            <Titulo>Já sabe por onde começar?</Titulo>
+            <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
+            <Input 
+                placeholder="Escreva sua próxima leitura"
+                onBlur={evento => {
+                    const textoDigitado = evento.target.value
+                    const resultadoPesquisa = livros.filter(livro => livro.nome.includes(textoDigitado))
+                    setLivrosPesquisados(resultadoPesquisa)
+                }}
+            />
+            { livrosPesquisados.map( livro => (
+                <div>
+                    <p>{livro.nome}</p>
+                    <img src={livro.src} alt='capa'/>
+                </div>
+            ))}
+        </PesquisaContainer>
+    )
+}
+
+export default Pesquisa
+
+este map vai retornar um html e por isso a função callback usa parênteses
+ele cria uma div para ser o elemento pai
+
+
