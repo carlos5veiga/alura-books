@@ -730,3 +730,46 @@ const Titulo = styled.h2`
 `
 export default Titulo
 
+Vamos agora criar um card para ficar no final da seção últimos lançamentos
+esta será a estrutura básica....
+<div>
+    <h3>Talvez você se interesse por...</h3>
+    <h4>Angular 11</h4>
+    <p>Construindo uma aplicação completa</p>
+    <img alt="capa"/>
+    <button>Saiba mais</button>
+</div>
+
+Vamos transformar isso em um componente... CardRecomenda
+
+Só que este vai ter parâmetros na function...
+titulo, subtitulo, descricao, img...
+as props funcionarão desta maneira agora...
+ATENÇÃO PARA AS CHAVES NOS PARÂMETROS ABAIXO...
+function CardRecomenda({titulo, subtitulo, descricao, img}) {
+    return (
+        <div>
+            <h3>{titulo}</h3>
+            <h4>{subtitulo}</h4>
+            <p>{descricao}</p>
+            <img src={img} alt="capa" />
+            <button>Saiba mais</button>
+        </div>
+    )
+}
+
+export default CardRecomenda
+
+e a chamada fica assim....
+
+<CardRecomenda 
+  titulo="Talvez você se interesse por..."
+  subtitulo="Angular 11"
+  descricao="Construindo uma aplicação completa"
+  img={imagemLivro}
+/>
+
+Ele apenas estilizou para arrumar....
+
+Excelente....
+
