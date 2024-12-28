@@ -574,4 +574,159 @@ export default Pesquisa
 este map vai retornar um html e por isso a função callback usa parênteses
 ele cria uma div para ser o elemento pai
 
+Agora vamos conhecer as props e criar uma nova seção para o nosso site
+
+Vamos criar no App.js o componente UltimosLancamentos
+
+Criou uma pequena seção embaixo da principal e com as props conseguimos passar algumas
+configurações para o componente.
+
+<AppContainer>
+  <Header />
+  <Pesquisa />
+  <UltimosLancamentos />
+</AppContainer>
+
+Ele agora criou um arquivo para ter os dados dos últimos lançamentos.
+dadosUltimosLancamentos.js tem a mesma estrutura que dadosPesquisa.js
+importa ele no index do UltimosLancamentos
+
+criou os syled components e ficou assim...
+
+function UltimosLancamentos() {
+    return (
+        <UltimosLancamentosContainer>
+            <Titulo>Últimos Lançamentos</Titulo>
+            <NovosLivrosContainer>
+                {livros.map(livro => (
+                    <img src={livro.src} />
+                ))}
+            </NovosLivrosContainer>
+        </UltimosLancamentosContainer>
+    )
+}
+
+export default UltimosLancamentos
+
+Vamos usar as props para deixar os componentes mais genéricos
+
+Inicialmente vamos considerar a cor da fonte do título
+No styled.h2 a gente ficou assim inicialmente...
+
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: #EB9B00;
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+`
+
+Para poder lidar com as props mais tranquilamente, vamos criar um componente Titulo
+
+Deu tudo certo
+Ele exportou sem o default, colocando direto...
+
+export const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: #EB9B00;
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+`
+
+Dessa forma, ele importou usando em últimos lançamentos usando as chaves
+import { Titulo } from....
+
+Eu usei o export default e importei normalmente, sem as chaves...
+
+Vamos às props...
+Props são atributos personalizáveis que criamos para algum componente...
+Da mesma forma que src é um atributo padrão para a tag img, podemos criar atributos (props)
+Vamos criar uma prop cor para passar a cor do título
+O primeiro passo é simples... passar o valor na chamada de Titulo...
+<Titulo cor="#000">Últimos Lançamentos</Titulo>
+O segundo passo é informar no componente e também é simples
+
+Estava assim...
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: #EB9B00;
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+`
+export default Titulo
+
+e para usar props...
+
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: ${ props => props.cor };
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+`
+export default Titulo
+
+Muito simples e muito eficiente...
+
+E ainda podemos definir um valor padrão, caso não seja passado o atributo cor na chamada...
+
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: ${ props => props.cor || '#EB9B00' };
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+`
+export default Titulo
+
+Muuuuito legal.....
+
+vamos criar os props tamanhoFonte e alinhamento
+
+<Titulo cor="#000" tamanhoFonte="20px" alinhamento="left">Últimos Lançamentos</Titulo>
+
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: ${ props => props.cor || '#EB9B00' };
+    font-size: ${ props => props.tamanhoFonte || '36px' };
+    text-align: ${ props => props.alinhamento || 'center' };
+    margin: 0;
+`
+export default Titulo
+
+Sensacional!!!
+
+
+Invertemos para que a cor default seja preto e a passada seja o laranja...
+
+<Titulo 
+  cor="#EB9B00" 
+  tamanhoFonte="36px" 
+  alinhamento="center"
+  >Últimos Lançamentos</Titulo>
+
+const Titulo = styled.h2`
+    width: 100%;
+    padding: 30px 0;
+    background-color: #FFF;
+    color: ${ props => props.cor || '#000' };
+    font-size: ${ props => props.tamanhoFonte || '36px' };
+    text-align: ${ props => props.alinhamento || 'center' };
+    margin: 0;
+`
+export default Titulo
 
